@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 interface ResultsData {
   result: 'win' | 'lose' | 'timeout';
+  demonName?: string;
 }
 
 export class ResultsScene extends Phaser.Scene {
@@ -11,7 +12,7 @@ export class ResultsScene extends Phaser.Scene {
 
   create(data: ResultsData): void {
     const { width, height } = this.scale;
-    const { result } = data;
+    const { result, demonName = 'the demon' } = data;
     
     // Background based on result
     const bgColor = result === 'win' ? '#0a3d0a' : '#3d0a0a';
@@ -24,9 +25,9 @@ export class ResultsScene extends Phaser.Scene {
     
     switch (result) {
       case 'win':
-        resultText = 'DEMON DEFEATED';
+        resultText = `${demonName.toUpperCase()} DEFEATED`;
         resultColor = '#2ecc71';
-        therapistComment = '"Not bad. But did you learn anything?\nOr did you just hit it until it stopped?"';
+        therapistComment = `"Not bad. ${demonName} was a tough one.\nBut did you understand it, or just hit it until it stopped?"`;
         break;
       case 'lose':
         resultText = 'YOU FELL';
