@@ -1,0 +1,24 @@
+{
+  "mode": "yolo",
+  "granularity": "coarse",
+  "parallelization": false,
+  "commit_docs": true,
+  "model_profile": "balanced",
+  "workflow": {
+    "research": false,
+    "plan_check": true,
+    "verifier": true,
+    "auto_advance": false
+  },
+  "planning": {
+    "project_name": "Inner Demons RPG",
+    "project_slug": "inner-demons-rpg",
+    "created": "2026-03-22T19:22:00Z",
+    "prototype_scope": true
+  },
+  "deployment": {
+    "platform": "vercel",
+    "build_tool": "vite",
+    "output_dir": "dist"
+  }
+}
