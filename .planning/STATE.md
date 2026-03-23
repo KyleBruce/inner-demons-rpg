@@ -6,9 +6,10 @@
 
 ## Current Status
 
-**Phase:** 0 (Not Started)
-**Milestone:** Initialization Complete
-**Next Action:** Begin Phase 1 (Foundation)
+**Phase:** 1 (Foundation) — **COMPLETE** ✅
+**Phase:** 2 (Battle System) — In Progress (60%)
+**Milestone:** Team Selection Working
+**Next Action:** Test full flow on mobile, then build Recognition Capture
 
 ---
 
@@ -16,12 +17,22 @@
 
 | Phase | Status | Progress |
 |-------|--------|----------|
-| 1. Foundation | Not Started | 0/5 plans |
-| 2. Battle System | Not Started | 0/5 plans |
+| 1. Foundation | ✅ Complete | 5/5 plans (100%) |
+| 2. Battle System | In Progress | 3/5 plans (60%) |
 | 3. Capture & Collection | Not Started | 0/6 plans |
 | 4. Core Content | Not Started | 0/9 plans |
 | 5. Profiling & Narration | Not Started | 0/6 plans |
 | 6. Polish & Testing | Not Started | 0/6 plans |
+
+**Actually Implemented (2026-03-22/23):**
+- ✅ Phaser 3 + TypeScript + Vite project setup
+- ✅ Mobile-responsive canvas (390x844 portrait, touch-first)
+- ✅ Scene structure (Boot → Title → TeamSelect → Battle → Results)
+- ✅ Battle system with stances, abilities, timer
+- ✅ All 6 core demons + The Mask boss defined
+- ✅ **Team Selection Scene** (2026-03-23)
+- ❌ Placeholder sprites (colored rectangles, not pixel art)
+- ❌ Asset loading (textures generated at runtime)
 
 ---
 
@@ -48,12 +59,23 @@
 
 ## Recent Activity
 
+### 2026-03-23
+- ✅ **Team Selection Scene implemented**
+  - Grid of 6 demon cards with visual selection
+  - Info panel showing stats, stances, abilities
+  - "FIGHT" button starts battle with selected demon
+  - Fixed BattleScene to accept playerDemonType from scene data
+- ✅ Fixed TypeScript compilation errors
+- ✅ Build successful (4.8MB bundle)
+
 ### 2026-03-22
 - ✅ Project initialized
 - ✅ PROJECT.md created
 - ✅ REQUIREMENTS.md created (85 requirements across 13 categories)
 - ✅ ROADMAP.md created (6 phases)
 - ✅ STATE.md created
+- ✅ Core battle system implemented
+- ✅ All 6 demons + boss defined in code
 
 ---
 
@@ -74,13 +96,28 @@ None currently.
 ## File Locations
 
 ```
-/home/node/.openclaw/workspace/projects/inner-demons-rpg/
+/home/projects/inner-demons-rpg/
 ├── .planning/
 │   ├── PROJECT.md
 │   ├── REQUIREMENTS.md
 │   ├── ROADMAP.md
 │   └── STATE.md
-└── (source code will go here)
+├── src/
+│   ├── scenes/
+│   │   ├── BootScene.ts
+│   │   ├── TitleScene.ts
+│   │   ├── TeamSelectScene.ts (NEW 2026-03-23)
+│   │   ├── BattleScene.ts
+│   │   └── ResultsScene.ts
+│   ├── entities/
+│   │   └── Demon.ts
+│   ├── data/
+│   │   └── demons.ts
+│   ├── systems/
+│   │   └── BattleSystem.ts
+│   └── main.ts
+├── dist/ (built output)
+└── package.json
 ```
 
 ---

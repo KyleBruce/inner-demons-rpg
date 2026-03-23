@@ -2,6 +2,11 @@ import Phaser from 'phaser';
 import { BattleSystem, BattleState } from '../systems/BattleSystem';
 import { DemonInstance } from '../entities/Demon';
 
+interface BattleSceneData {
+  playerDemonType?: string;
+  enemyDemonType?: string;
+}
+
 export class BattleScene extends Phaser.Scene {
   private battleTimer!: number;
   private timerText!: Phaser.GameObjects.Text;
@@ -16,13 +21,15 @@ export class BattleScene extends Phaser.Scene {
     super({ key: 'BattleScene' });
   }
 
-  create(): void {
+  create(data: BattleSceneData): void {
     const { width } = this.scale;
+    const playerDemonType = data.playerDemonType || 'hope';
+    const enemyDemonType = data.enemyDemonType || undefined; // Random if not specified
     
     this.battleEnded = false;
     
     // Initialize battle system
-    this.battleSystem = new BattleSystem('hope', undefined); // Player starts with Hope
+    this.battleSystem = new BattleSystem(playerDemonType, enemyDemonType);
     this.battleState = this.battleSystem.getState();
     
     // Battle background

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BootScene } from './scenes/BootScene';
 import { TitleScene } from './scenes/TitleScene';
+import { TeamSelectScene } from './scenes/TeamSelectScene';
 import { BattleScene } from './scenes/BattleScene';
 import { ResultsScene } from './scenes/ResultsScene';
 
@@ -21,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false,
     },
   },
-  scene: [BootScene, TitleScene, BattleScene, ResultsScene],
+  scene: [BootScene, TitleScene, TeamSelectScene, BattleScene, ResultsScene],
   input: {
     activePointers: 3,
     touch: {

@@ -1,5 +1,8 @@
 import { Demon, DemonType } from '../entities/Demon';
 
+// Re-export DemonType for convenience
+export type { DemonType } from '../entities/Demon';
+
 // All demon definitions
 export const DEMONS: Record<DemonType, Demon> = {
   anxiety: {
