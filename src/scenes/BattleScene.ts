@@ -116,6 +116,26 @@ export class BattleScene extends Phaser.Scene {
       this.cameras.main.shake(100, 0.01);
     }
   }
+  
+  private showStatusEffect(label: string, x: number, y: number, color: string = '#f1c40f'): void {
+    const text = this.add.text(x, y, label, {
+      fontFamily: 'monospace',
+      fontSize: '20px',
+      color: color,
+      fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(100);
+    
+    // Pop and fade
+    this.tweens.add({
+      targets: text,
+      y: y - 50,
+      alpha: 0,
+      scale: 1.3,
+      duration: 1000,
+      ease: 'Power2',
+      onComplete: () => text.destroy(),
+    });
+  }
 
   private drawBattle(): void {
     const { width, height } = this.scale;
@@ -280,12 +300,18 @@ export class BattleScene extends Phaser.Scene {
     const attackBtn = this.createButton(width * 0.5, height * 0.88, '⚔ ATTACK', 0xe74c3c, 120, 40);
     attackBtn.setInteractive();
     attackBtn.on('pointerdown', () => {
-      const enemyHealthBefore = this.battleState.enemy.currentHealth;
-      this.battleSystem.basicAttack(player, this.battleState.enemy);
-      const damage = enemyHealthBefore - this.battleState.enemy.currentHealth;
+      const result = this.battleSystem.basicAttack(player, this.battleState.enemy);
       
-      // Show damage number
-      this.showDamageNumber(damage, width / 2, height * 0.35);
+      // Show damage number or dodge
+      if (result.isDodged) {
+        this.showStatusEffect('DODGED!', width / 2, height * 0.35, '#f1c40f');
+      } else if (result.isCritical) {
+        this.showDamageNumber(result.damage, width / 2, height * 0.35);
+        this.showStatusEffect('CRITICAL!', width / 2, height * 0.25, '#ff6b6b');
+        this.cameras.main.shake(150, 0.02);
+      } else {
+        this.showDamageNumber(result.damage, width / 2, height * 0.35);
+      }
       
       this.updateLog();
       if (this.battleState.isOver) {
@@ -374,13 +400,29 @@ export class BattleScene extends Phaser.Scene {
     
     const enemy = this.battleState.enemy;
     const player = this.battleState.player;
+    const { width, height } = this.scale;
     
     // Simple AI: use ability if health > 50%, otherwise attack
     if (enemy.currentHealth > enemy.maxHealth * 0.5 && enemy.demon.abilities.length > 0) {
       const ability = enemy.demon.abilities[Math.floor(Math.random() * enemy.demon.abilities.length)];
       this.battleSystem.useAbility(enemy, player, ability);
+      
+      // Show damage feedback
+      const damage = enemy.demon.baseStats.attack; // Approximate
+      this.showDamageNumber(damage, width / 2, height * 0.65);
     } else {
-      this.battleSystem.basicAttack(enemy, player);
+      const result = this.battleSystem.basicAttack(enemy, player);
+      
+      // Show damage number or dodge
+      if (result.isDodged) {
+        this.showStatusEffect('DODGED!', width / 2, height * 0.65, '#f1c40f');
+      } else if (result.isCritical) {
+        this.showDamageNumber(result.damage, width / 2, height * 0.65);
+        this.showStatusEffect('CRITICAL!', width / 2, height * 0.55, '#ff6b6b');
+        this.cameras.main.shake(150, 0.02);
+      } else {
+        this.showDamageNumber(result.damage, width / 2, height * 0.65);
+      }
     }
     
     this.updateLog();

@@ -151,10 +151,31 @@ export class BattleSystem {
     }
   }
 
-  basicAttack(attacker: DemonInstance, defender: DemonInstance): void {
-    const damage = Math.max(1, attacker.currentAttack - defender.currentDefense / 2);
+  basicAttack(attacker: DemonInstance, defender: DemonInstance): { damage: number; isCritical: boolean; isDodged: boolean } {
+    // Evasion check based on speed difference
+    const speedDiff = defender.currentSpeed - attacker.currentSpeed;
+    const dodgeChance = Math.max(0, Math.min(20, speedDiff * 2)); // 0-20% dodge chance
+    
+    if (Math.random() * 100 < dodgeChance) {
+      this.log(`${defender.demon.name} dodges the attack!`);
+      return { damage: 0, isCritical: false, isDodged: true };
+    }
+    
+    // Calculate base damage
+    let damage = Math.max(1, attacker.currentAttack - defender.currentDefense / 2);
+    
+    // Critical hit check (10% base chance, modified by speed)
+    const critChance = 10 + (attacker.currentSpeed - 10);
+    const isCritical = Math.random() * 100 < critChance;
+    
+    if (isCritical) {
+      damage *= 1.5;
+      this.log(`CRITICAL HIT! ${attacker.demon.name} strikes for ${Math.round(damage)} damage!`);
+    } else {
+      this.log(`${attacker.demon.name} attacks for ${Math.round(damage)} damage!`);
+    }
+    
     defender.currentHealth -= damage;
-    this.log(`${attacker.demon.name} attacks for ${Math.round(damage)} damage!`);
 
     if (defender.currentHealth <= 0) {
       defender.currentHealth = 0;
@@ -162,6 +183,8 @@ export class BattleSystem {
       this.state.winner = attacker === this.state.player ? 'player' : 'enemy';
       this.log(`${defender.demon.name} is defeated!`);
     }
+    
+    return { damage: Math.round(damage), isCritical, isDodged: false };
   }
 
   defend(instance: DemonInstance): void {
