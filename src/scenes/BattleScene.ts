@@ -344,10 +344,21 @@ export class BattleScene extends Phaser.Scene {
     this.battleEnded = true;
     
     this.time.delayedCall(1000, () => {
-      this.scene.start('ResultsScene', { 
-        result,
-        demonName: this.battleState.enemy.demon.name
-      });
+      if (result === 'win') {
+        // Survived - go to recognition phase
+        this.scene.start('RecognitionScene', {
+          enemyType: this.battleState.enemy.demon.type,
+          battleResult: 'survived',
+          turnsSurvived: this.battleState.turnNumber,
+        });
+      } else {
+        // Lost or timeout - no capture attempt
+        this.scene.start('ResultsScene', { 
+          result,
+          demonName: this.battleState.enemy.demon.name,
+          captured: false,
+        });
+      }
     });
   }
 }

@@ -3,6 +3,7 @@ import { BootScene } from './scenes/BootScene';
 import { TitleScene } from './scenes/TitleScene';
 import { TeamSelectScene } from './scenes/TeamSelectScene';
 import { BattleScene } from './scenes/BattleScene';
+import { RecognitionScene } from './scenes/RecognitionScene';
 import { ResultsScene } from './scenes/ResultsScene';
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -22,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false,
     },
   },
-  scene: [BootScene, TitleScene, TeamSelectScene, BattleScene, ResultsScene],
+  scene: [BootScene, TitleScene, TeamSelectScene, BattleScene, RecognitionScene, ResultsScene],
   input: {
     activePointers: 3,
     touch: {

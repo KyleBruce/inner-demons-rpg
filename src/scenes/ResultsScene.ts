@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 
 interface ResultsData {
-  result: 'win' | 'lose' | 'timeout';
+  result: 'win' | 'lose' | 'timeout' | 'captured' | 'fled';
   demonName?: string;
+  captured?: boolean;
 }
 
 export class ResultsScene extends Phaser.Scene {
@@ -15,7 +16,9 @@ export class ResultsScene extends Phaser.Scene {
     const { result, demonName = 'the demon' } = data;
     
     // Background based on result
-    const bgColor = result === 'win' ? '#0a3d0a' : '#3d0a0a';
+    let bgColor = '#3d0a0a';
+    if (result === 'win' || result === 'captured') bgColor = '#0a3d0a';
+    if (result === 'timeout') bgColor = '#3d3d0a';
     this.cameras.main.setBackgroundColor(bgColor);
     
     // Result text
@@ -28,6 +31,16 @@ export class ResultsScene extends Phaser.Scene {
         resultText = `${demonName.toUpperCase()} DEFEATED`;
         resultColor = '#2ecc71';
         therapistComment = `"Not bad. ${demonName} was a tough one.\nBut did you understand it, or just hit it until it stopped?"`;
+        break;
+      case 'captured':
+        resultText = `${demonName.toUpperCase()} CAPTURED`;
+        resultColor = '#2ecc71';
+        therapistComment = `"You understood it. That's the hard part.\nNow it fights for you."`;
+        break;
+      case 'fled':
+        resultText = `${demonName.toUpperCase()} ESCAPED`;
+        resultColor = '#f1c40f';
+        therapistComment = `"It got away. But you'll see it again.\nThey always come back, you know."`;
         break;
       case 'lose':
         resultText = 'YOU FELL';
@@ -78,7 +91,7 @@ export class ResultsScene extends Phaser.Scene {
     this.input.once('pointerdown', () => {
       this.cameras.main.fadeOut(500, 0, 0, 0);
       this.time.delayedCall(500, () => {
-        this.scene.start('TitleScene');
+        this.scene.start('TeamSelectScene');
       });
     });
     
