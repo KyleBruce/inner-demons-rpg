@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BattleSystem, BattleState } from '../systems/BattleSystem';
 import { DemonInstance } from '../entities/Demon';
+import { DemonCollection } from '../systems/Collection';
 
 interface BattleSceneData {
   playerDemonType?: string;
@@ -16,6 +17,7 @@ export class BattleScene extends Phaser.Scene {
   private logText!: Phaser.GameObjects.Text;
   private stanceButtons: Phaser.GameObjects.Container[] = [];
   private abilityButtons: Phaser.GameObjects.Container[] = [];
+  private playerDemonType: string = 'hope';
 
   constructor() {
     super({ key: 'BattleScene' });
@@ -23,13 +25,13 @@ export class BattleScene extends Phaser.Scene {
 
   create(data: BattleSceneData): void {
     const { width } = this.scale;
-    const playerDemonType = data.playerDemonType || 'hope';
+    this.playerDemonType = data.playerDemonType || 'hope';
     const enemyDemonType = data.enemyDemonType || undefined; // Random if not specified
     
     this.battleEnded = false;
     
     // Initialize battle system
-    this.battleSystem = new BattleSystem(playerDemonType, enemyDemonType);
+    this.battleSystem = new BattleSystem(this.playerDemonType, enemyDemonType);
     this.battleState = this.battleSystem.getState();
     
     // Battle background
@@ -342,6 +344,12 @@ export class BattleScene extends Phaser.Scene {
 
   private endBattle(result: 'win' | 'lose' | 'timeout'): void {
     this.battleEnded = true;
+    
+    // Award XP to player's demon based on performance
+    if (result === 'win') {
+      const xpGained = 10 + Math.floor(this.battleState.turnNumber * 2); // Base + turns survived
+      DemonCollection.addExperience(this.playerDemonType, xpGained);
+    }
     
     this.time.delayedCall(1000, () => {
       if (result === 'win') {

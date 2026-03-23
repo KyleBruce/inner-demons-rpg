@@ -1,32 +1,43 @@
 import Phaser from 'phaser';
 import { DEMONS, DemonType } from '../data/demons';
 import { Stance, Ability } from '../entities/Demon';
+import { DemonCollection, CapturedDemon } from '../systems/Collection';
 
 export class TeamSelectScene extends Phaser.Scene {
-  private selectedDemon: DemonType = 'hope';
+  private selectedDemon: DemonType | null = null;
   private demonCards: Phaser.GameObjects.Container[] = [];
   private infoPanel!: Phaser.GameObjects.Container;
   private readyButton!: Phaser.GameObjects.Container;
-
+  private collection: CapturedDemon[] = [];
+  
   constructor() {
     super({ key: 'TeamSelectScene' });
   }
-
+  
   create(): void {
     const { width } = this.scale;
+    
+    // Load collection
+    this.collection = DemonCollection.getCollection();
+    
+    // If no demons captured, give player Hope as starter
+    if (this.collection.length === 0) {
+      DemonCollection.captureDemon('hope', 'Hope');
+      this.collection = DemonCollection.getCollection();
+    }
     
     this.cameras.main.setBackgroundColor('#1a1a2e');
     
     // Title
-    this.add.text(width / 2, 40, 'CHOOSE YOUR DEMON', {
+    this.add.text(width / 2, 40, 'YOUR DEMONS', {
       fontFamily: 'monospace',
       fontSize: '24px',
       color: '#e74c3c',
       fontStyle: 'bold',
     }).setOrigin(0.5);
     
-    // Therapist comment
-    this.add.text(width / 2, 70, '"Pick your neurosis. They\'re all you, anyway."',
+    // Collection count
+    this.add.text(width / 2, 70, `${this.collection.length}/6 captured`,
       {
         fontFamily: 'monospace',
         fontSize: '12px',
@@ -44,13 +55,15 @@ export class TeamSelectScene extends Phaser.Scene {
     // Ready button
     this.drawReadyButton();
     
-    // Select default demon
-    this.selectDemon('hope');
+    // Select first captured demon by default
+    if (this.collection.length > 0) {
+      this.selectDemon(this.collection[0].type as DemonType);
+    }
     
     // Fade in
     this.cameras.main.fadeIn(300);
   }
-
+  
   private drawDemonCards(): void {
     const { width } = this.scale;
     const cardWidth = 55;
@@ -63,50 +76,79 @@ export class TeamSelectScene extends Phaser.Scene {
     
     demonTypes.forEach((type, i) => {
       const x = startX + i * (cardWidth + spacing);
+      const captured = this.collection.find(d => d.type === type);
       
-      const card = this.createDemonCard(x, y, type, cardWidth, cardHeight);
+      const card = this.createDemonCard(x, y, type, cardWidth, cardHeight, captured);
       this.demonCards.push(card);
     });
   }
-
-  private createDemonCard(x: number, y: number, type: DemonType, w: number, h: number): Phaser.GameObjects.Container {
+  
+  private createDemonCard(x: number, y: number, type: DemonType, w: number, h: number, captured?: CapturedDemon): Phaser.GameObjects.Container {
     const demon = DEMONS[type];
     const card = this.add.container(x, y);
+    const isLocked = !captured;
     
     // Background
-    const bg = this.add.rectangle(0, 0, w, h, 0x2c3e50)
-      .setStrokeStyle(2, 0x34495e);
+    const bgColor = isLocked ? 0x1a1a2e : 0x2c3e50;
+    const bg = this.add.rectangle(0, 0, w, h, bgColor)
+      .setStrokeStyle(2, isLocked ? 0x333333 : 0x34495e);
     
     // Demon sprite
-    const sprite = this.add.sprite(0, -10, `demon_${type}`).setScale(1.5);
+    const sprite = this.add.sprite(0, -10, `demon_${type}`)
+      .setScale(1.5)
+      .setTint(isLocked ? 0x333333 : 0xffffff)
+      .setAlpha(isLocked ? 0.3 : 1);
     
     // Name (shortened)
     const shortName = demon.name.substring(0, 6);
-    const nameText = this.add.text(0, 22, shortName, {
+    const nameColor = isLocked ? '#555555' : '#ecf0f1';
+    const nameText = this.add.text(0, 22, isLocked ? '???' : shortName, {
       fontFamily: 'monospace',
       fontSize: '9px',
-      color: '#ecf0f1',
+      color: nameColor,
     }).setOrigin(0.5);
     
+    // Level badge (if captured)
+    let levelBadge: Phaser.GameObjects.Text | null = null;
+    if (captured && !isLocked) {
+      levelBadge = this.add.text(w/2 - 5, -h/2 + 5, `Lv${captured.level}`, {
+        fontFamily: 'monospace',
+        fontSize: '8px',
+        color: '#f1c40f',
+      }).setOrigin(0.5);
+    }
+    
+    // Lock icon (if locked)
+    let lockIcon: Phaser.GameObjects.Text | null = null;
+    if (isLocked) {
+      lockIcon = this.add.text(0, 0, '🔒', {
+        fontSize: '16px',
+      }).setOrigin(0.5);
+    }
+    
     card.add([bg, sprite, nameText]);
+    if (levelBadge) card.add(levelBadge);
+    if (lockIcon) card.add(lockIcon);
     card.setSize(w, h);
     
-    // Make interactive
-    card.setInteractive();
-    card.on('pointerdown', () => {
-      this.selectDemon(type);
-      this.tweens.add({
-        targets: card,
-        scaleX: 0.9,
-        scaleY: 0.9,
-        duration: 50,
-        yoyo: true,
+    // Only captured demons are interactive
+    if (!isLocked) {
+      card.setInteractive();
+      card.on('pointerdown', () => {
+        this.selectDemon(type);
+        this.tweens.add({
+          targets: card,
+          scaleX: 0.9,
+          scaleY: 0.9,
+          duration: 50,
+          yoyo: true,
+        });
       });
-    });
+    }
     
     return card;
   }
-
+  
   private selectDemon(type: DemonType): void {
     this.selectedDemon = type;
     
@@ -115,14 +157,20 @@ export class TeamSelectScene extends Phaser.Scene {
       const demonTypes: DemonType[] = ['anxiety', 'procrastination', 'confidence', 'numbness', 'mania', 'hope'];
       const cardType = demonTypes[i];
       const isSelected = cardType === type;
+      const captured = this.collection.find(d => d.type === cardType);
+      const isLocked = !captured;
       
       // Get the background (first child)
       const bg = card.getAt(0) as Phaser.GameObjects.Rectangle;
-      bg.setStrokeStyle(2, isSelected ? 0x2ecc71 : 0x34495e);
       
-      if (isSelected) {
+      if (isLocked) {
+        bg.setStrokeStyle(2, 0x333333);
+        bg.setFillStyle(0x1a1a2e);
+      } else if (isSelected) {
+        bg.setStrokeStyle(3, 0x2ecc71);
         bg.setFillStyle(0x34495e);
       } else {
+        bg.setStrokeStyle(2, 0x34495e);
         bg.setFillStyle(0x2c3e50);
       }
     });
@@ -130,7 +178,7 @@ export class TeamSelectScene extends Phaser.Scene {
     // Update info panel
     this.updateInfoPanel();
   }
-
+  
   private drawInfoPanel(): void {
     const { width } = this.scale;
     const panelY = 220;
@@ -143,9 +191,12 @@ export class TeamSelectScene extends Phaser.Scene {
       .setStrokeStyle(2, 0x34495e);
     this.infoPanel.add(bg);
   }
-
+  
   private updateInfoPanel(): void {
+    if (!this.selectedDemon) return;
+    
     const demon = DEMONS[this.selectedDemon];
+    const captured = this.collection.find(d => d.type === this.selectedDemon);
     const { width } = this.scale;
     
     // Clear old content (keep background at index 0)
@@ -165,6 +216,17 @@ export class TeamSelectScene extends Phaser.Scene {
     this.infoPanel.add(nameText);
     yOffset += 25;
     
+    // Level and XP (if captured)
+    if (captured) {
+      const xpText = this.add.text(0, yOffset, `Level ${captured.level} | XP: ${captured.experience}/100 | Wins: ${captured.battlesWon}`, {
+        fontFamily: 'monospace',
+        fontSize: '10px',
+        color: '#f1c40f',
+      }).setOrigin(0.5);
+      this.infoPanel.add(xpText);
+      yOffset += 20;
+    }
+    
     // Description
     const descText = this.add.text(0, yOffset, demon.description, {
       fontFamily: 'monospace',
@@ -174,7 +236,7 @@ export class TeamSelectScene extends Phaser.Scene {
       wordWrap: { width: width - 60 },
     }).setOrigin(0.5);
     this.infoPanel.add(descText);
-    yOffset += 35;
+    yOffset += 30;
     
     // Base stats
     const statsText = this.add.text(0, yOffset, 
@@ -236,7 +298,7 @@ export class TeamSelectScene extends Phaser.Scene {
       yOffset += 22;
     });
   }
-
+  
   private drawReadyButton(): void {
     const { width, height } = this.scale;
     const y = height - 60;
@@ -258,6 +320,8 @@ export class TeamSelectScene extends Phaser.Scene {
     
     this.readyButton.setInteractive();
     this.readyButton.on('pointerdown', () => {
+      if (!this.selectedDemon) return;
+      
       this.tweens.add({
         targets: this.readyButton,
         scaleX: 0.9,
@@ -270,8 +334,10 @@ export class TeamSelectScene extends Phaser.Scene {
       });
     });
   }
-
+  
   private startBattle(): void {
+    if (!this.selectedDemon) return;
+    
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.time.delayedCall(300, () => {
       this.scene.start('BattleScene', { 

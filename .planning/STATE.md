@@ -7,9 +7,10 @@
 ## Current Status
 
 **Phase:** 1 (Foundation) — **COMPLETE** ✅
-**Phase:** 2 (Battle System) — In Progress (60%)
-**Milestone:** Team Selection Working
-**Next Action:** Test full flow on mobile, then build Recognition Capture
+**Phase:** 2 (Battle System) — **COMPLETE** ✅
+**Phase:** 3 (Capture & Collection) — In Progress (50%)
+**Milestone:** Recognition Capture Working
+**Next Action:** Field captured demons in battle, add leveling system
 
 ---
 
@@ -18,8 +19,8 @@
 | Phase | Status | Progress |
 |-------|--------|----------|
 | 1. Foundation | ✅ Complete | 5/5 plans (100%) |
-| 2. Battle System | In Progress | 3/5 plans (60%) |
-| 3. Capture & Collection | Not Started | 0/6 plans |
+| 2. Battle System | ✅ Complete | 5/5 plans (100%) |
+| 3. Capture & Collection | In Progress | 3/6 plans (50%) |
 | 4. Core Content | Not Started | 0/9 plans |
 | 5. Profiling & Narration | Not Started | 0/6 plans |
 | 6. Polish & Testing | Not Started | 0/6 plans |
@@ -27,12 +28,18 @@
 **Actually Implemented (2026-03-22/23):**
 - ✅ Phaser 3 + TypeScript + Vite project setup
 - ✅ Mobile-responsive canvas (390x844 portrait, touch-first)
-- ✅ Scene structure (Boot → Title → TeamSelect → Battle → Results)
+- ✅ Scene structure (Boot → Title → TeamSelect → Battle → Recognition → Results)
 - ✅ Battle system with stances, abilities, timer
 - ✅ All 6 core demons + The Mask boss defined
 - ✅ **Team Selection Scene** (2026-03-23)
+- ✅ **Recognition Capture System** (2026-03-23)
+  - RecognitionScene with 3 attempts + hints
+  - Collection system with LocalStorage
+  - Demon aliases for flexible recognition
+  - Win → Recognition → Capture/Fled flow
+- ❌ Field captured demons (can't select from collection yet)
+- ❌ Leveling system (XP tracked but not used)
 - ❌ Placeholder sprites (colored rectangles, not pixel art)
-- ❌ Asset loading (textures generated at runtime)
 
 ---
 
