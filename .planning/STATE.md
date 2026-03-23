@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 13:11 UTC
+**Last Updated:** 2026-03-23 13:22 UTC
 
 ---
 
@@ -9,9 +9,10 @@
 **Phase:** 1 (Foundation) — **COMPLETE** ✅
 **Phase:** 2 (Battle System) — **COMPLETE** ✅
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
-**Phase:** 4 (Core Content) — In Progress (33%)
-**Milestone:** The Maze Exploration Working
-**Next Action:** Test on mobile, then add profiling/narration
+**Phase:** 4 (Core Content) — **COMPLETE** ✅
+**Phase:** 5 (Profiling & Narration) — In Progress (50%)
+**Milestone:** Profiling System Working
+**Next Action:** Add ending scenes, polish therapist commentary
 
 ---
 
@@ -22,8 +23,8 @@
 | 1. Foundation | ✅ Complete | 5/5 plans (100%) |
 | 2. Battle System | ✅ Complete | 5/5 plans (100%) |
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
-| 4. Core Content | 🔨 In Progress | 3/9 plans (33%) |
-| 5. Profiling & Narration | Not Started | 0/6 plans |
+| 4. Core Content | 🔨 In Progress | 7/9 plans (78%) |
+| 5. Profiling & Narration | 🔨 In Progress | 4/6 plans (67%) |
 | 6. Polish & Testing | Not Started | 0/6 plans |
 
 **Actually Implemented (2026-03-22/23):**
@@ -50,6 +51,16 @@
   - Random demon encounters (15% per move)
   - Boss encounter after 20 steps
   - Dark dreamscape atmosphere
+- ✅ **Profiling System** (2026-03-23)
+  - Tracks battle style, demon preferences, avoidance patterns
+  - Play style detection (aggressive/defensive/avoidant/balanced)
+  - Ending calculator based on behavior
+  - Therapist narrator commentary generator
+  - 5 ending types: avoider, grinder, balancer, self-destroyer, integrated
+  - LocalStorage persistence
+- ❌ The Mask boss special mechanics (mirroring, phases)
+- ❌ Avoidance → boss escalation system
+- ❌ Therapist dialogue integration in scenes
 - ❌ Placeholder sprites (colored rectangles, not pixel art)
 
 ---
@@ -102,6 +113,13 @@
   - Boss encounter after 20 steps
   - Player demon carried from TeamSelect
   - Dark dreamscape atmosphere
+- ✅ **Profiling System**
+  - Tracks battle style, demon preferences, avoidance patterns
+  - Play style detection (aggressive/defensive/avoidant/balanced)
+  - Ending calculator based on behavior
+  - Therapist narrator commentary generator
+  - 5 ending types: avoider, grinder, balancer, self-destroyer, integrated
+  - Integrated into BattleScene, RecognitionScene, MazeScene
 
 ### 2026-03-22
 - ✅ Project initialized

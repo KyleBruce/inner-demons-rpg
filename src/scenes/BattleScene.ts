@@ -60,8 +60,33 @@ export class BattleScene extends Phaser.Scene {
     // Draw battle
     this.drawBattle();
     
+    // Therapist commentary at battle start
+    this.showTherapistComment(ProfilingSystem.getTherapistCommentary('battle_start'));
+    
     // Fade in
     this.cameras.main.fadeIn(300);
+  }
+  
+  private showTherapistComment(text: string): void {
+    const { width } = this.scale;
+    
+    const comment = this.add.text(width / 2, 55, `"${text}"`, {
+      fontFamily: 'monospace',
+      fontSize: '10px',
+      color: '#7f8c8d',
+      align: 'center',
+      wordWrap: { width: width - 40 },
+    }).setOrigin(0.5).setAlpha(0);
+    
+    this.tweens.add({
+      targets: comment,
+      alpha: 1,
+      duration: 500,
+      delay: 500,
+      yoyo: true,
+      hold: 3000,
+      onComplete: () => comment.destroy(),
+    });
   }
 
   private drawBattle(): void {

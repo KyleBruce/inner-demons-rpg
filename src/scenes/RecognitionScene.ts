@@ -291,9 +291,10 @@ export class RecognitionScene extends Phaser.Scene {
       color: '#f1c40f',
     }).setOrigin(0.5);
     
-    // Therapist comment
+    // Therapist comment from profiling system
+    const therapistComment = ProfilingSystem.getTherapistCommentary('capture');
     this.add.text(width / 2, height * 0.68, 
-      `"You saw it for what it is.\nThat's how you take the power back."`,
+      `"${therapistComment}"`,
       {
         fontFamily: 'monospace',
         fontSize: '12px',
@@ -349,9 +350,10 @@ export class RecognitionScene extends Phaser.Scene {
       }
     ).setOrigin(0.5);
     
-    // Therapist comment
+    // Therapist comment from profiling system
+    const therapistComment = ProfilingSystem.getTherapistCommentary('fled');
     this.add.text(width / 2, height * 0.6, 
-      `"Not every demon wants to be known.\nMaybe next time you'll see it coming."`,
+      `"${therapistComment}"`,
       {
         fontFamily: 'monospace',
         fontSize: '12px',

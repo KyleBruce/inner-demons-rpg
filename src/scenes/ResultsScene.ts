@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { ProfilingSystem } from '../systems/ProfilingSystem';
 
 interface ResultsData {
   result: 'win' | 'lose' | 'timeout' | 'captured' | 'fled';
@@ -24,35 +25,36 @@ export class ResultsScene extends Phaser.Scene {
     // Result text
     let resultText = '';
     let resultColor = '';
-    let therapistComment = '';
     
     switch (result) {
       case 'win':
         resultText = `${demonName.toUpperCase()} DEFEATED`;
         resultColor = '#2ecc71';
-        therapistComment = `"Not bad. ${demonName} was a tough one.\nBut did you understand it, or just hit it until it stopped?"`;
         break;
       case 'captured':
         resultText = `${demonName.toUpperCase()} CAPTURED`;
         resultColor = '#2ecc71';
-        therapistComment = `"You understood it. That's the hard part.\nNow it fights for you."`;
         break;
       case 'fled':
         resultText = `${demonName.toUpperCase()} ESCAPED`;
         resultColor = '#f1c40f';
-        therapistComment = `"It got away. But you'll see it again.\nThey always come back, you know."`;
         break;
       case 'lose':
         resultText = 'YOU FELL';
         resultColor = '#e74c3c';
-        therapistComment = '"The demon was stronger this time.\nThey usually are, when you run."';
         break;
       case 'timeout':
         resultText = 'TIME\'S UP';
         resultColor = '#f1c40f';
-        therapistComment = '"You hesitated. Hesitation is its own kind of defeat.\nWhat were you afraid of?"';
         break;
     }
+    
+    // Get therapist comment from profiling system
+    const therapistComment = ProfilingSystem.getTherapistCommentary(
+      result === 'win' ? 'battle_win' : 
+      result === 'lose' ? 'battle_lose' : 
+      'battle_win'
+    );
     
     // Title
     this.add.text(width / 2, height * 0.3, resultText, {
