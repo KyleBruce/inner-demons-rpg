@@ -458,25 +458,43 @@ export class BattleScene extends Phaser.Scene {
       // Track win for profiling
       const healthPercent = this.battleState.player.currentHealth / this.battleState.player.maxHealth;
       ProfilingSystem.trackBattleWin(this.battleState.turnNumber, healthPercent);
+      
+      // Track boss defeat if applicable
+      if (this.battleState.enemy.demon.isBoss) {
+        ProfilingSystem.trackBossDefeated();
+      }
     } else {
       // Track loss for profiling
       ProfilingSystem.trackBattleLost();
     }
     
+    const isBoss = this.battleState.enemy.demon.isBoss;
+    
     this.time.delayedCall(1000, () => {
       if (result === 'win') {
-        // Survived - go to recognition phase
-        this.scene.start('RecognitionScene', {
-          enemyType: this.battleState.enemy.demon.type,
-          battleResult: 'survived',
-          turnsSurvived: this.battleState.turnNumber,
-        });
+        // Boss goes straight to results/ending, no capture
+        if (isBoss) {
+          this.scene.start('ResultsScene', {
+            result,
+            demonName: this.battleState.enemy.demon.name,
+            captured: false,
+            isBoss: true,
+          });
+        } else {
+          // Regular demon - go to recognition phase
+          this.scene.start('RecognitionScene', {
+            enemyType: this.battleState.enemy.demon.type,
+            battleResult: 'survived',
+            turnsSurvived: this.battleState.turnNumber,
+          });
+        }
       } else {
         // Lost or timeout - no capture attempt
         this.scene.start('ResultsScene', { 
           result,
           demonName: this.battleState.enemy.demon.name,
           captured: false,
+          isBoss,
         });
       }
     });

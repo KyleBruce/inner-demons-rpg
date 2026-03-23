@@ -5,6 +5,7 @@ interface ResultsData {
   result: 'win' | 'lose' | 'timeout' | 'captured' | 'fled';
   demonName?: string;
   captured?: boolean;
+  isBoss?: boolean;
 }
 
 export class ResultsScene extends Phaser.Scene {
@@ -14,7 +15,7 @@ export class ResultsScene extends Phaser.Scene {
 
   create(data: ResultsData): void {
     const { width, height } = this.scale;
-    const { result, demonName = 'the demon' } = data;
+    const { result, demonName = 'the demon', isBoss = false } = data;
     
     // Background based on result
     let bgColor = '#3d0a0a';
@@ -93,7 +94,12 @@ export class ResultsScene extends Phaser.Scene {
     this.input.once('pointerdown', () => {
       this.cameras.main.fadeOut(500, 0, 0, 0);
       this.time.delayedCall(500, () => {
-        this.scene.start('TeamSelectScene');
+        // If defeated boss, show ending
+        if (isBoss && result === 'win') {
+          this.scene.start('EndingScene');
+        } else {
+          this.scene.start('TeamSelectScene');
+        }
       });
     });
     

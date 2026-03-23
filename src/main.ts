@@ -6,6 +6,7 @@ import { MazeScene } from './scenes/MazeScene';
 import { BattleScene } from './scenes/BattleScene';
 import { RecognitionScene } from './scenes/RecognitionScene';
 import { ResultsScene } from './scenes/ResultsScene';
+import { EndingScene } from './scenes/EndingScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -24,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false,
     },
   },
-  scene: [BootScene, TitleScene, TeamSelectScene, MazeScene, BattleScene, RecognitionScene, ResultsScene],
+  scene: [BootScene, TitleScene, TeamSelectScene, MazeScene, BattleScene, RecognitionScene, ResultsScene, EndingScene],
   input: {
     activePointers: 3,
     touch: {

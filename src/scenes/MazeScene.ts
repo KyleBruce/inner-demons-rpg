@@ -25,6 +25,7 @@ export class MazeScene extends Phaser.Scene {
   private moveCount: number = 0;
   private stepsUntilBoss: number = 20;
   private playerDemonType: string = 'hope';
+  private stepText!: Phaser.GameObjects.Text;
   
   constructor() {
     super({ key: 'MazeScene' });
@@ -68,6 +69,15 @@ export class MazeScene extends Phaser.Scene {
         fontSize: '10px',
         color: '#7f8c8d',
         align: 'center',
+      }
+    ).setOrigin(0.5);
+    
+    // Step counter
+    this.stepText = this.add.text(width / 2, 70, `Steps: 0/${this.stepsUntilBoss} until The Mask`,
+      {
+        fontFamily: 'monospace',
+        fontSize: '11px',
+        color: '#f1c40f',
       }
     ).setOrigin(0.5);
     
@@ -214,6 +224,22 @@ export class MazeScene extends Phaser.Scene {
   private setupControls(): void {
     const { width, height } = this.scale;
     
+    // Direction arrows (visual hints)
+    const arrowStyle = {
+      fontFamily: 'monospace',
+      fontSize: '32px',
+      color: '#4a4a6a',
+    };
+    
+    // Up arrow
+    this.add.text(width / 2, height / 2 - 200, '▲', arrowStyle).setOrigin(0.5).setAlpha(0.5);
+    // Down arrow  
+    this.add.text(width / 2, height / 2 + 200, '▼', arrowStyle).setOrigin(0.5).setAlpha(0.5);
+    // Left arrow
+    this.add.text(width / 2 - 140, height / 2, '◀', arrowStyle).setOrigin(0.5).setAlpha(0.5);
+    // Right arrow
+    this.add.text(width / 2 + 140, height / 2, '▶', arrowStyle).setOrigin(0.5).setAlpha(0.5);
+    
     // Touch zones for movement
     const zoneSize = 100;
     
@@ -251,6 +277,16 @@ export class MazeScene extends Phaser.Scene {
     this.playerX += dx;
     this.playerY += dy;
     this.moveCount++;
+    
+    // Update step counter
+    const stepsLeft = Math.max(0, this.stepsUntilBoss - this.moveCount);
+    this.stepText.setText(`Steps: ${this.moveCount}/${this.stepsUntilBoss} until The Mask`);
+    
+    // Warn as approaching boss
+    if (stepsLeft <= 5 && stepsLeft > 0) {
+      this.stepText.setColor('#e74c3c');
+      this.stepText.setFontStyle('bold');
+    }
     
     // Animate
     this.tweens.add({
