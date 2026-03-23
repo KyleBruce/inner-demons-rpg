@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 15:17 UTC
+**Last Updated:** 2026-03-23 15:50 UTC
 
 ---
 
@@ -11,9 +11,9 @@
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
 **Phase:** 4 (Core Content) — **COMPLETE** ✅
 **Phase:** 5 (Profiling & Narration) — **COMPLETE** ✅
-**Phase:** 6 (Polish & Testing) — In Progress (33%)
-**Milestone:** UI Polish Started
-**Next Action:** Combat balance, mobile testing, bug fixes
+**Phase:** 6 (Polish & Testing) — In Progress (50%)
+**Milestone:** Combat Balanced
+**Next Action:** Mobile testing, bug fixes, performance optimization
 
 ---
 
@@ -26,7 +26,7 @@
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
 | 4. Core Content | ✅ Complete | 9/9 plans (100%) |
 | 5. Profiling & Narration | ✅ Complete | 6/6 plans (100%) |
-| 6. Polish & Testing | 🔨 In Progress | 2/6 plans (33%) |
+| 6. Polish & Testing | 🔨 In Progress | 3/6 plans (50%) |
 
 **Actually Implemented (2026-03-22/23):**
 - ✅ Phaser 3 + TypeScript + Vite project setup
@@ -138,6 +138,12 @@
   - Floating damage numbers on attack
   - Screen shake on big hits
   - Visual feedback makes combat feel impactful
+- ✅ **Combat Balance** (Phase 6 continued)
+  - Critical hit system (10% base + speed modifier, 1.5x damage)
+  - Evasion system based on speed difference (0-20% dodge)
+  - CRITICAL! and DODGED! visual feedback
+  - Both player and enemy show combat feedback
+  - Combat more dynamic and unpredictable
 
 ### 2026-03-22
 - ✅ Project initialized
