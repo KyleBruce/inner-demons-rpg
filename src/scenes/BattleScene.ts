@@ -88,6 +88,34 @@ export class BattleScene extends Phaser.Scene {
       onComplete: () => comment.destroy(),
     });
   }
+  
+  private showDamageNumber(damage: number, x: number, y: number, isHeal: boolean = false): void {
+    const color = isHeal ? '#2ecc71' : '#e74c3c';
+    const prefix = isHeal ? '+' : '-';
+    
+    const text = this.add.text(x, y, `${prefix}${damage}`, {
+      fontFamily: 'monospace',
+      fontSize: '24px',
+      color: color,
+      fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(100);
+    
+    // Float up and fade
+    this.tweens.add({
+      targets: text,
+      y: y - 60,
+      alpha: 0,
+      scale: 1.5,
+      duration: 800,
+      ease: 'Power2',
+      onComplete: () => text.destroy(),
+    });
+    
+    // Screen shake for damage
+    if (!isHeal && damage > 5) {
+      this.cameras.main.shake(100, 0.01);
+    }
+  }
 
   private drawBattle(): void {
     const { width, height } = this.scale;
@@ -252,7 +280,13 @@ export class BattleScene extends Phaser.Scene {
     const attackBtn = this.createButton(width * 0.5, height * 0.88, '⚔ ATTACK', 0xe74c3c, 120, 40);
     attackBtn.setInteractive();
     attackBtn.on('pointerdown', () => {
+      const enemyHealthBefore = this.battleState.enemy.currentHealth;
       this.battleSystem.basicAttack(player, this.battleState.enemy);
+      const damage = enemyHealthBefore - this.battleState.enemy.currentHealth;
+      
+      // Show damage number
+      this.showDamageNumber(damage, width / 2, height * 0.35);
+      
       this.updateLog();
       if (this.battleState.isOver) {
         this.endBattle('win');
