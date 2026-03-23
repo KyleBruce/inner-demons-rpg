@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { BattleSystem, BattleState } from '../systems/BattleSystem';
 import { DemonInstance } from '../entities/Demon';
 import { DemonCollection } from '../systems/Collection';
+import { ProfilingSystem } from '../systems/ProfilingSystem';
 
 interface BattleSceneData {
   playerDemonType?: string;
@@ -33,6 +34,9 @@ export class BattleScene extends Phaser.Scene {
     // Initialize battle system
     this.battleSystem = new BattleSystem(this.playerDemonType, enemyDemonType);
     this.battleState = this.battleSystem.getState();
+    
+    // Track battle start for profiling
+    ProfilingSystem.trackBattleStart(this.playerDemonType);
     
     // Battle background
     this.cameras.main.setBackgroundColor('#16213e');
@@ -349,6 +353,13 @@ export class BattleScene extends Phaser.Scene {
     if (result === 'win') {
       const xpGained = 10 + Math.floor(this.battleState.turnNumber * 2); // Base + turns survived
       DemonCollection.addExperience(this.playerDemonType, xpGained);
+      
+      // Track win for profiling
+      const healthPercent = this.battleState.player.currentHealth / this.battleState.player.maxHealth;
+      ProfilingSystem.trackBattleWin(this.battleState.turnNumber, healthPercent);
+    } else {
+      // Track loss for profiling
+      ProfilingSystem.trackBattleLost();
     }
     
     this.time.delayedCall(1000, () => {

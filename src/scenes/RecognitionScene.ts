@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { DEMONS } from '../data/demons';
 import { DemonCollection } from '../systems/Collection';
+import { ProfilingSystem } from '../systems/ProfilingSystem';
 
 interface RecognitionData {
   enemyType: string;
@@ -263,6 +264,9 @@ export class RecognitionScene extends Phaser.Scene {
     // Capture the demon
     const captured = DemonCollection.captureDemon(this.enemyType, demonName);
     
+    // Track capture for profiling
+    ProfilingSystem.trackDemonCaptured(this.enemyType);
+    
     // Success overlay
     this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.8);
     
@@ -319,6 +323,9 @@ export class RecognitionScene extends Phaser.Scene {
     const { width, height } = this.scale;
     
     this.cleanup();
+    
+    // Track fled demon for profiling
+    ProfilingSystem.trackDemonFled(this.enemyType);
     
     // Failure overlay
     this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.8);

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { DemonType } from '../data/demons';
 import { DemonCollection } from '../systems/Collection';
+import { ProfilingSystem } from '../systems/ProfilingSystem';
 
 interface MazeCell {
   x: number;
@@ -282,6 +283,9 @@ export class MazeScene extends Phaser.Scene {
     const types: DemonType[] = ['anxiety', 'procrastination', 'confidence', 'numbness', 'mania', 'hope'];
     const enemyType = types[Math.floor(Math.random() * types.length)];
     
+    // Track maze exploration for profiling
+    ProfilingSystem.trackMazeExplored(this.moveCount);
+    
     // Flash effect
     this.cameras.main.flash(200, 100, 0, 0);
     
@@ -294,6 +298,10 @@ export class MazeScene extends Phaser.Scene {
   }
   
   private encounterBoss(): void {
+    // Track maze exploration for profiling
+    ProfilingSystem.trackMazeExplored(this.moveCount);
+    ProfilingSystem.trackBossFought();
+    
     this.cameras.main.flash(400, 200, 0, 0);
     
     this.time.delayedCall(500, () => {
