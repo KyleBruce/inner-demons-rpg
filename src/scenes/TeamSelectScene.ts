@@ -340,9 +340,7 @@ export class TeamSelectScene extends Phaser.Scene {
     
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.time.delayedCall(300, () => {
-      this.scene.start('BattleScene', { 
-        playerDemonType: this.selectedDemon 
-      });
+      this.scene.start('MazeScene');
     });
   }
 }
