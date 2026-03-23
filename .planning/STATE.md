@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 15:50 UTC
+**Last Updated:** 2026-03-23 16:05 UTC
 
 ---
 
@@ -11,9 +11,9 @@
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
 **Phase:** 4 (Core Content) — **COMPLETE** ✅
 **Phase:** 5 (Profiling & Narration) — **COMPLETE** ✅
-**Phase:** 6 (Polish & Testing) — In Progress (50%)
-**Milestone:** Combat Balanced
-**Next Action:** Mobile testing, bug fixes, performance optimization
+**Phase:** 6 (Polish & Testing) — In Progress (67%)
+**Milestone:** Ending Scene Complete
+**Next Action:** Mobile testing, bug fixes
 
 ---
 
@@ -26,7 +26,7 @@
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
 | 4. Core Content | ✅ Complete | 9/9 plans (100%) |
 | 5. Profiling & Narration | ✅ Complete | 6/6 plans (100%) |
-| 6. Polish & Testing | 🔨 In Progress | 3/6 plans (50%) |
+| 6. Polish & Testing | 🔨 In Progress | 4/6 plans (67%) |
 
 **Actually Implemented (2026-03-22/23):**
 - ✅ Phaser 3 + TypeScript + Vite project setup
@@ -144,6 +144,18 @@
   - CRITICAL! and DODGED! visual feedback
   - Both player and enemy show combat feedback
   - Combat more dynamic and unpredictable
+- ✅ **Maze UI Polish** (Phase 6 continued)
+  - Direction arrows showing where to tap
+  - Step counter showing progress toward boss
+  - Warning color when 5 steps from boss encounter
+  - Better visual feedback for navigation
+- ✅ **Ending Scene** (Phase 6 continued)
+  - EndingScene shows final ending based on behavior
+  - 5 endings: Avoider, Grinder, Balancer, Self-Destroyer, Integrated
+  - Stats display: battles, captures, play time, favorite demon
+  - Play again or keep progress options
+  - Boss victory routes to ending scene
+  - Full game loop complete
 
 ### 2026-03-22
 - ✅ Project initialized
