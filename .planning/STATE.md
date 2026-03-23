@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 14:15 UTC
+**Last Updated:** 2026-03-23 15:17 UTC
 
 ---
 
@@ -11,9 +11,9 @@
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
 **Phase:** 4 (Core Content) — **COMPLETE** ✅
 **Phase:** 5 (Profiling & Narration) — **COMPLETE** ✅
-**Phase:** 6 (Polish & Testing) — Not Started (0%)
-**Milestone:** Therapist Narrator Integrated
-**Next Action:** Polish UI, balance combat, mobile testing
+**Phase:** 6 (Polish & Testing) — In Progress (33%)
+**Milestone:** UI Polish Started
+**Next Action:** Combat balance, mobile testing, bug fixes
 
 ---
 
@@ -26,7 +26,7 @@
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
 | 4. Core Content | ✅ Complete | 9/9 plans (100%) |
 | 5. Profiling & Narration | ✅ Complete | 6/6 plans (100%) |
-| 6. Polish & Testing | Not Started | 0/6 plans |
+| 6. Polish & Testing | 🔨 In Progress | 2/6 plans (33%) |
 
 **Actually Implemented (2026-03-22/23):**
 - ✅ Phaser 3 + TypeScript + Vite project setup
@@ -132,6 +132,12 @@
   - RecognitionScene uses profiling for capture/fled comments
   - ResultsScene generates personalized therapist feedback
   - Comments adapt to play style over time
+- ✅ **UI Polish** (Phase 6 started)
+  - Improved placeholder sprites with eyes and expressions
+  - Each demon has distinct visual personality
+  - Floating damage numbers on attack
+  - Screen shake on big hits
+  - Visual feedback makes combat feel impactful
 
 ### 2026-03-22
 - ✅ Project initialized
