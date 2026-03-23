@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 13:22 UTC
+**Last Updated:** 2026-03-23 14:15 UTC
 
 ---
 
@@ -10,9 +10,10 @@
 **Phase:** 2 (Battle System) — **COMPLETE** ✅
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
 **Phase:** 4 (Core Content) — **COMPLETE** ✅
-**Phase:** 5 (Profiling & Narration) — In Progress (50%)
-**Milestone:** Profiling System Working
-**Next Action:** Add ending scenes, polish therapist commentary
+**Phase:** 5 (Profiling & Narration) — **COMPLETE** ✅
+**Phase:** 6 (Polish & Testing) — Not Started (0%)
+**Milestone:** Therapist Narrator Integrated
+**Next Action:** Polish UI, balance combat, mobile testing
 
 ---
 
@@ -23,8 +24,8 @@
 | 1. Foundation | ✅ Complete | 5/5 plans (100%) |
 | 2. Battle System | ✅ Complete | 5/5 plans (100%) |
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
-| 4. Core Content | 🔨 In Progress | 7/9 plans (78%) |
-| 5. Profiling & Narration | 🔨 In Progress | 4/6 plans (67%) |
+| 4. Core Content | ✅ Complete | 9/9 plans (100%) |
+| 5. Profiling & Narration | ✅ Complete | 6/6 plans (100%) |
 | 6. Polish & Testing | Not Started | 0/6 plans |
 
 **Actually Implemented (2026-03-22/23):**
@@ -58,6 +59,11 @@
   - Therapist narrator commentary generator
   - 5 ending types: avoider, grinder, balancer, self-destroyer, integrated
   - LocalStorage persistence
+- ✅ **Therapist Narrator Integration** (2026-03-23)
+  - Dynamic commentary in BattleScene, RecognitionScene, ResultsScene
+  - Comments reflect player behavior patterns
+  - Notices avoidant behavior, favorite demons, play style
+  - Integrated at key moments (battle start, capture, fled, results)
 - ❌ The Mask boss special mechanics (mirroring, phases)
 - ❌ Avoidance → boss escalation system
 - ❌ Therapist dialogue integration in scenes
@@ -120,6 +126,12 @@
   - Therapist narrator commentary generator
   - 5 ending types: avoider, grinder, balancer, self-destroyer, integrated
   - Integrated into BattleScene, RecognitionScene, MazeScene
+- ✅ **Therapist Narrator Integration**
+  - Dynamic commentary based on player behavior
+  - BattleScene shows comments at battle start
+  - RecognitionScene uses profiling for capture/fled comments
+  - ResultsScene generates personalized therapist feedback
+  - Comments adapt to play style over time
 
 ### 2026-03-22
 - ✅ Project initialized
