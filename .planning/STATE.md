@@ -1,6 +1,6 @@
 # State — Inner Demons RPG
 
-**Last Updated:** 2026-03-23 02:09 UTC
+**Last Updated:** 2026-03-23 13:11 UTC
 
 ---
 
@@ -9,9 +9,9 @@
 **Phase:** 1 (Foundation) — **COMPLETE** ✅
 **Phase:** 2 (Battle System) — **COMPLETE** ✅
 **Phase:** 3 (Capture & Collection) — **COMPLETE** ✅
-**Phase:** 4 (Core Content) — Not Started (0%)
-**Milestone:** Full Core Loop Working
-**Next Action:** Build The Maze (exploration/encounter scene)
+**Phase:** 4 (Core Content) — In Progress (33%)
+**Milestone:** The Maze Exploration Working
+**Next Action:** Test on mobile, then add profiling/narration
 
 ---
 
@@ -22,14 +22,14 @@
 | 1. Foundation | ✅ Complete | 5/5 plans (100%) |
 | 2. Battle System | ✅ Complete | 5/5 plans (100%) |
 | 3. Capture & Collection | ✅ Complete | 6/6 plans (100%) |
-| 4. Core Content | Not Started | 0/9 plans |
+| 4. Core Content | 🔨 In Progress | 3/9 plans (33%) |
 | 5. Profiling & Narration | Not Started | 0/6 plans |
 | 6. Polish & Testing | Not Started | 0/6 plans |
 
 **Actually Implemented (2026-03-22/23):**
 - ✅ Phaser 3 + TypeScript + Vite project setup
 - ✅ Mobile-responsive canvas (390x844 portrait, touch-first)
-- ✅ Scene structure (Boot → Title → TeamSelect → Battle → Recognition → Results)
+- ✅ Scene structure (Boot → Title → TeamSelect → **Maze** → Battle → Recognition → Results)
 - ✅ Battle system with stances, abilities, timer
 - ✅ All 6 core demons + The Mask boss defined
 - ✅ **Team Selection Scene** (2026-03-23)
@@ -44,6 +44,12 @@
   - Captured demons show level badge
   - Player starts with Hope as starter
   - XP awarded after battle wins
+- ✅ **The Maze Exploration** (2026-03-23)
+  - MazeScene with procedurally generated maze
+  - Touch controls (tap direction to move)
+  - Random demon encounters (15% per move)
+  - Boss encounter after 20 steps
+  - Dark dreamscape atmosphere
 - ❌ Placeholder sprites (colored rectangles, not pixel art)
 
 ---
@@ -89,6 +95,13 @@
   - XP gain after battle wins
   - Hope given as starter demon
   - Full progression loop working
+- ✅ **The Maze Exploration Scene**
+  - Procedurally generated 7x7 maze
+  - Touch controls for 4-directional movement
+  - Random demon encounters (15% chance per move)
+  - Boss encounter after 20 steps
+  - Player demon carried from TeamSelect
+  - Dark dreamscape atmosphere
 
 ### 2026-03-22
 - ✅ Project initialized
@@ -129,6 +142,7 @@ None currently.
 │   │   ├── BootScene.ts
 │   │   ├── TitleScene.ts
 │   │   ├── TeamSelectScene.ts
+│   │   ├── MazeScene.ts
 │   │   ├── BattleScene.ts
 │   │   ├── RecognitionScene.ts
 │   │   └── ResultsScene.ts
